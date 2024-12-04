@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="black">
+  <link rel="icon" href="Cake.webp" type="image/png">
+  <title>Feliz Aniversário!</title>
+  <style>
+    @font-face {
+      font-family: "Minecraft";
+      src: url("MinecraftFifty-Solid.otf");
+    }
+  
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: "Minecraft", sans-serif;
+    }
+  
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      overflow: hidden; /* Impede a rolagem */
+    }
+    
+    header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 10px 20px;
+    }
+  
+    .language-switch {
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      border: 2px solid black;
+      border-radius: 8px;
+      background: black;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+  
+    .language-switch:hover {
+      background: #FFD700;
+      color: black;
+    }
+  
+    /* Modal de Carregamento */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #FFD700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+  
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 10px solid black;
+      border-top: 10px solid gold;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  
+    .main-content {
+      display: none;
+      text-align: center;
+    }
+  
+    h1 {
+      font-size: 2.8rem;
+      color: black;
+      margin-bottom: 20px;
+    }
+  
+    h1 span {
+      color: gold;
+    }
+  
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+  
+    button {
+      padding: 12px 50px;
+      font-size: 1.4rem;
+      border: 2px solid black;
+      border-radius: 8px;
+      background: black;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+  
+    button:hover {
+      background: gold;
+      color: black;
+    }
+  
+    .yes {
+      animation: bounce 2s infinite;
+    }
+  
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+  
+      40% {
+        transform: translateY(-10px);
+      }
+  
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+  
+    .final-screen {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  
+    .final-screen img {
+      max-width: 100%;
+      height: auto;
+      animation: bounce 2s infinite;
+    }
+  
+    .final-screen button {
+      margin-top: 20px;
+    }
+  
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 15vw;
+      max-width: 120px;
+      height: auto;
+      animation: floatUp ease-in infinite;
+    }
+  
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+  
+      80% {
+        opacity: 1;
+      }
+  
+      100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+  
+    /* Modal de Feliz Aniversário */
+    .birthday-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+  
+    .birthday-modal-content {
+      background-color: transparent;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+  
+    .birthday-modal-content h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+  
+    .birthday-modal-content button {
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      background: black;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+  
+    .birthday-modal-content button:hover {
+      background: gold;
+      color: black;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <button class="language-switch" id="language-switch">Português</button>
+  </header>
+
+  <!-- Modal -->
+  <div class="modal">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1 id="main-title">Feliz Aniversário, <span>Yasmin</span></h1>
+    <div class="buttons">
+      <button class="yes">Continue</button>
+    </div>
+  </div>
+
+  <!-- Final Screen -->
+  <div class="final-screen">
+    <img id="final-image" src="Cake.webp" alt="Parabéns!">
+  </div>
+
+  <!-- Birthday Modal -->
+  <div class="birthday-modal" id="birthday-modal">
+    <div class="birthday-modal-content">
+      <h2 id="modal-message"></h2>
+      <button id="close-modal"  onclick="window.location.reload();" >Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.querySelector('.modal');
+    const mainContent = document.querySelector('.main-content');
+    const finalScreen = document.querySelector('.final-screen');
+    const birthdayModal = document.getElementById('birthday-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const languageSwitch = document.getElementById('language-switch');
+    const mainTitle = document.getElementById('main-title');
+    const yesButton = document.querySelector('.yes');
+
+    let currentLanguage = "pt";
+
+    const textContent = {
+      pt: {
+        title: "Feliz Aniversário, <span>Yasmin</span>",
+        modalMessage: "Feliz Aniversário! Você acaba de craftar um novo ano de vida!",
+        yes: "Continue",
+        button: "English",
+        closeButton: "Fechar"
+      },
+      en: {
+        title: "Happy Birthday, <span>Yasmin</span>",
+        modalMessage: "Happy Birthday! You’ve just crafted a new year of life!",
+        yes: "Next",
+        button: "Português",
+        closeButton: "Close"
+      }
+    };
+
+    function switchLanguage() {
+      currentLanguage = currentLanguage === "en" ? "pt" : "en";
+      mainTitle.innerHTML = textContent[currentLanguage].title;
+      yesButton.textContent = textContent[currentLanguage].yes;
+      languageSwitch.textContent = textContent[currentLanguage].button;
+      modalMessage.textContent = textContent[currentLanguage].modalMessage;
+      closeModalButton.textContent = textContent[currentLanguage].closeButton;
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        modal.style.display = 'none';
+        mainContent.style.display = 'block';
+      }, 3000);
+    });
+
+    languageSwitch.addEventListener('click', switchLanguage);
+
+    yesButton.addEventListener('click', () => {
+      mainContent.style.display = 'none';
+      finalScreen.style.display = 'flex';
+
+      for (let i = 0; i < 20; i++) {
+        createBalloon();
+      }
+
+      setTimeout(() => {
+        birthdayModal.style.display = 'flex';
+        modalMessage.textContent = textContent[currentLanguage].modalMessage;
+      }, 3000);
+    });
+
+    closeModalButton.addEventListener('click', () => {
+      birthdayModal.style.display = 'none';
+    });
+
+    function createBalloon() {
+      const balloon = document.createElement('img');
+      // balloon.src = "Balloon.webp"; 
+      balloon.classList.add('balloon');
+      document.body.appendChild(balloon);
+    }
+  </script>
+</body>
+
+</html>
